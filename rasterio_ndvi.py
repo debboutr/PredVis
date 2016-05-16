@@ -1,6 +1,4 @@
 """
-Created on Sun May 15 19:43:03 2016
-
 @author: rick
 """
 import rasterio, numpy as np
@@ -41,9 +39,6 @@ with rasterio.open('stretched_ndvi.tif', 'w', **kwargs) as stretchedraster:
     stretchedraster.write_band(1, stretched_ndvi.astype(rasterio.uint8))
     print 'export successful'
 
-
-
- 
 # Create a histogram function
 def rasterHistogram(raster_matrix):
     '''Accepts matrix and generates histogram'''
@@ -62,41 +57,6 @@ def rasterHistogram(raster_matrix):
     # Show the plot on screen
     plt.show()
 
-with rasterio.open("stretched_ndvi.tif") as image:
-    print image
-    blue = image.read_band(1)
-# Open a raster using rasterIO
-#...
 # Pass matrix representation of raster to function
 rasterHistogram(blue)
 # Shows histogram on screen
-
-with rasterio.open("stacked_composite.tif") as image:
-    print image
-    blue = image.read_band(1)
-    green = image.read_band(2)
-    red = image.read_band(3)
-    nir = image.read_band(4)
-    
-    
-red = np.array(red, dtype=float)
-nir = np.array(nir, dtype=float)
-
-# Create variables for the NDVI formula
-num = nir - red
-denom = (nir + red) + 0.00000000001
-
-ndvi = np.divide(num,denom)
-
-rasterHistogram(ndvi)
-
-stretched_ndvi = (ndvi + 1) * 255 
-
-
-
-kwargs = image.meta
-kwargs.update(dtype = rasterio.uint8, count = 1, compres = 'lzw')
-
-with rasterio.open('stretched_ndvi.tif', 'w', **kwargs) as stretchedraster:
-    stretchedraster.write_band(1, stretched_ndvi.astype(rasterio.uint8))
-    print 'export successful'
